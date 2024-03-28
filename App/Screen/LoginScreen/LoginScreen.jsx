@@ -1,8 +1,34 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
-import Colors from '../../Utils/Colors'
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import * as WebBrowser from "expo-web-browser";
+import Colors from '../../Utils/Colors';
+import { useOAuth } from "@clerk/clerk-expo";
+import { useWarmUpBrowser } from "../../../hooks/useWarmUpBrowser";
 
+WebBrowser.maybeCompleteAuthSession();
 export default function LoginScreen() {
+  useWarmUpBrowser();
+ 
+  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+
+  const onPress = async() => {
+    try {
+      const { createdSessionId, signIn, signUp, setActive } =
+        await startOAuthFlow();
+ 
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        // Use signIn or signUp for next steps such as MFA
+      }
+    } catch (err) {
+      console.error("OAuth error", err);
+    }
+  }
+
+  
+
+  //NO TOKEN CACHE RIGHT NOW, APP WILL ASK TO LOGIN AGAIN EVERY TIME YOU RESTART THE APP
   return (
     <View
         style = {{
@@ -21,7 +47,7 @@ export default function LoginScreen() {
       <View style = {{padding:20}}>
         <Text style={styles.heading}>Find Hospitals near you!</Text>
         <Text style={styles.desc}> Simple app to find hospitals near you</Text>
-        <TouchableOpacity onPress={() => console.log("button clicked")} style={styles.button}>
+        <TouchableOpacity onPress={onPress} style={styles.button}>
             <Text style={{
                 color: Colors.WHITE,
                 textAlign: 'center',
