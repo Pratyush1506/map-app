@@ -7,11 +7,11 @@ export default function PlaceItem({place}) {
   return (
     <View
         style={{
-            minHeight: 300,
+            minHeight: 270,
             backgroundColor: Colors.WHITE,
             margin: 5,
             borderRadius:10,
-            width: Dimensions.get('screen').width*0.9
+            width: Dimensions.get('screen').width*0.97,
         }}
 
     >
