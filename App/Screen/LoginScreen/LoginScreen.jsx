@@ -27,8 +27,6 @@ export default function LoginScreen() {
   }
 
   
-
-  //NO TOKEN CACHE RIGHT NOW, APP WILL ASK TO LOGIN AGAIN EVERY TIME YOU RESTART THE APP
   return (
     <View
         style = {{

@@ -11,13 +11,13 @@ export default function HomeScreen() {
   const {location, setLocation} = useContext(UserLocationContext);
   const [placeList, setPlaceList] = useState([])
 
-  // useEffect(()=>{
-  //   location&&GetNearByPlace();
-  // },[location])
+  useEffect(()=>{
+    location&&GetNearByPlace();
+  },[location])
 
   const GetNearByPlace=()=>{
     const data = {
-      "includedTypes": ["hospital"], // DEFINE THE TYPE AS HOSPITALS TO GET DATA OF NEARBY HOSPITALS, SEARCH = GOOGLE PLACE API TYPE
+      "includedTypes": ["hospital"], 
       "maxResultCount": 10,
       "locationRestriction": {
         "circle": {

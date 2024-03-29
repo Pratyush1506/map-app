@@ -7,9 +7,9 @@ import LoginScreen from './App/Screen/LoginScreen/LoginScreen';
 import * as SecureStore from "expo-secure-store"; // IMPORT FOR STORING TOKEN
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
 import { NavigationContainer } from '@react-navigation/native';
-import TabNavigations from './App/Navigations/TabNavigations';
 import * as Location from 'expo-location';
 import { UserLocationContext } from './App/Context/UserLocationContext';
+import HomeScreen from './App/Screen/HomeScreen/HomeScreen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -74,12 +74,7 @@ export default function App() {
     return null;
   }
 
-  // <ClerkProviderProvider publishableKey={'pk_test_bm9ybWFsLXJhdHRsZXItNjMuY2xlcmsuYWNjb3VudHMuZGV2JA'}></ClerkProvider>
-      //   <View style={styles.container} onLayout={onLayoutRootView}>
-      //     <LoginScreen />
-      //     <StatusBar style="auto" />
-      //   </View>
-      // </ClerkProvider>
+
   return (
       <ClerkProvider
         tokenCache={tokenCache}
@@ -90,9 +85,7 @@ export default function App() {
         >
           <View style={styles.container} onLayout={onLayoutRootView}>
             <SignedIn>
-              <NavigationContainer>
-                <TabNavigations />
-              </NavigationContainer>
+                <HomeScreen />
             </SignedIn>
             <SignedOut>
               <LoginScreen />
