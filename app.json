@@ -27,12 +27,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow this App to use your location."
-        }
-      ]
+      "expo-font"
     ]
   }
 }

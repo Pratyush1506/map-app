@@ -2,14 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import LoginScreen from './App/Screen/LoginScreen/LoginScreen';
 import * as SecureStore from "expo-secure-store"; // IMPORT FOR STORING TOKEN
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
-import { NavigationContainer } from '@react-navigation/native';
-import TabNavigations from './App/Navigations/TabNavigations';
-import * as Location from 'expo-location';
-import { UserLocationContext } from './App/Context/UserLocationContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,31 +35,6 @@ export default function App() {
     'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
   });
 
-  //BELOW CODE IS FOR ASKING PERMISSION FOR USER'S LOCATION
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
-    })();
-  }, []);
-
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
-// END OF PERMISSION CODE
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
       await SplashScreen.hideAsync();
@@ -85,21 +56,15 @@ export default function App() {
         tokenCache={tokenCache}
         publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
       >
-        <UserLocationContext.Provider
-          value={{location, setLocation}}
-        >
-          <View style={styles.container} onLayout={onLayoutRootView}>
-            <SignedIn>
-              <NavigationContainer>
-                <TabNavigations />
-              </NavigationContainer>
-            </SignedIn>
-            <SignedOut>
-              <LoginScreen />
-            </SignedOut>
-            <StatusBar style="auto" />
-          </View>
-        </UserLocationContext.Provider>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <SignedIn>
+            <Text>You are Signed in</Text>
+          </SignedIn>
+          <SignedOut>
+            <LoginScreen />
+          </SignedOut>
+          <StatusBar style="auto" />
+        </View>
       </ClerkProvider>
   );
 }
