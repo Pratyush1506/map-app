@@ -2,8 +2,9 @@ import { View, Text, StyleSheet } from 'react-native'
 import MapView, { MapMarker, PROVIDER_GOOGLE, Marker } from 'react-native-maps'
 import React, { useContext } from 'react'
 import { UserLocationContext } from '../../Context/UserLocationContext'
+import Markers from './Markers';
 
-export default function AppMapView() {
+export default function AppMapView({placeList}) {
 
   const {location, setLocation} = useContext(UserLocationContext);
   return location?.latitude&&(
@@ -20,12 +21,19 @@ export default function AppMapView() {
 
         }}
       >
+        {location ? 
         <MapMarker
           coordinate={{
             latitude: location?.latitude,
             longitude: location?.longitude
           }}
-        />
+        /> : null
+      }
+        
+        {placeList&&placeList.map((item, index)=>(
+            <Markers key={index} place={item} />
+        ))}
+        
       </MapView>
     </View>
   )
